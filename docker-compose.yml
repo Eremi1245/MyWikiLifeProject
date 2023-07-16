@@ -1,0 +1,42 @@
+version: '3'
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    environment:
+      - discovery.type=single-node
+    ports:
+      - 9200:9200
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - mynetwork
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+    volumes:
+      - ./backend:/mywikilifeproject
+    ports:
+      - 8000:8000
+    depends_on:
+      - elasticsearch
+    networks:
+      - mynetwork
+
+  # frontend:
+  #   build:
+  #     context: ./frontend_react_app
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./frontend_react_app:/wikilifefront
+  #   ports:
+  #     - 3000:3000
+  #   networks:
+  #     - mynetwork
+
+volumes:
+  elasticsearch_data:
+
+networks:
+  mynetwork:
