@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from api.services.note.router import router as note_router
+from api.services.lol.router import router as lol_router
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -18,3 +19,4 @@ app.add_middleware(
 )
 
 app.include_router(note_router)
+app.include_router(lol_router)
